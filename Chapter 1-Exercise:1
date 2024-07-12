@@ -1,0 +1,28 @@
+clc 
+close all
+X=imread("dog.jpg");
+X=rgb2gray(X);
+X=double(X);
+n=size(X,2);
+[U S V]=svd(X);
+r=50;
+Um=U(:,1:r);
+Umtrans=Um';
+%I1=Umtrans*Um;
+%I2=Um*Umtrans;
+%error_mat=eye(size(U));
+errors=zeros(size(X,2),1);    
+for r=1:100:n
+    Um=U(:,1:r);
+    Umtrans=Um';
+    %I1=Umtrans*Um;
+    I2=Um*Umtrans;
+    iden_mat=eye(size(I2));
+    errors(r)=norm((I2-iden_mat),'fro');
+end
+figure();
+plot(1:n, errors);
+xlabel('Rank r')
+ylabel('error for rank r goes 1 to n')
+
+%imshow(X);
